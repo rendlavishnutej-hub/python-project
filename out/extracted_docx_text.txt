@@ -1,0 +1,645 @@
+A Course End Project Report
+
+or
+
+Complex Engineering Problem
+
+on
+
+Steel Surface Defect Image Analysis
+
+A9513 - Python Programming Laboratory
+
+Submitted by
+
+Batch No. 3
+
+Student Name-1
+
+(25881A05HD)
+
+Student Name-2
+
+(25881A05GV)
+
+Student Name-3
+
+(25881A05GN)
+
+Course Facilitator
+
+Name of the Faculty
+
+Designation
+
+Department of Computer Science and Engineering
+
+Vardhaman College of Engineering, Hyderabad
+
+October 2026
+
+Autonomous Institute, Affiliated to JNTUH,Approved by AICTE, Accredited by NAAC with A++ GradeKacharam, Shamshabad, Hyderabad- 501 218,Telangana, India.Autonomous Institute, Affiliated to JNTUH,Approved by AICTE, Accredited by NAAC with A++ GradeKacharam, Shamshabad, Hyderabad- 501 218,Telangana, India.
+
+Autonomous Institute, Affiliated to JNTUH,
+
+Approved by AICTE, Accredited by NAAC with A++ Grade
+
+Kacharam, Shamshabad, Hyderabad- 501 218,
+
+Telangana, India.
+
+Autonomous Institute, Affiliated to JNTUH,
+
+Approved by AICTE, Accredited by NAAC with A++ Grade
+
+Kacharam, Shamshabad, Hyderabad- 501 218,
+
+Telangana, India.
+
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING
+
+This is to certify that the Course End Project titled “Steel Surface Defect Image Analysis” is carried out by “Student Name-1”, “Student Name-2” and “Student Name-3” with Roll Numbers 25881A05HD, 25881A05GV and 25881A05GN towards A9513 – Python Programming Laboratory course in partial fulfilment of the requirements for the award of degree of Bachelor of Technology in Computer Science and Engineering during the Academic year 2026-27.
+
+Signature of the HODGagandeep AroraProfessor, HOD, CSESignature of the HODGagandeep AroraProfessor, HOD, CSESignature of the Course FacultyName of the FacultyDesignation, CSESignature of the Course FacultyName of the FacultyDesignation, CSE
+
+Signature of the HOD
+
+Gagandeep Arora
+
+Professor, HOD, CSE
+
+Signature of the HOD
+
+Gagandeep Arora
+
+Professor, HOD, CSE
+
+Signature of the Course Faculty
+
+Name of the Faculty
+
+Designation, CSE
+
+Signature of the Course Faculty
+
+Name of the Faculty
+
+Designation, CSE
+
+Contents
+
+Introduction3
+
+Literature Review3
+
+Objectives4
+
+Methodology4
+
+Architectural Diagram4
+
+Hardware and Software Requirements5
+
+Working Principle5
+
+Software Implementation5
+
+Results and Discussion7
+
+Mapping POs and SDGs12
+
+Program Outcomes (POs) Mapping12
+
+Sustainable Development Goals (SDGs) Mapping12
+
+Conclusion13
+
+Bibliography14
+
+Abstract
+
+Automated visual inspection is central to quality control in steel manufacturing, where surface defects such as scratches, patches, inclusions and pitting reduce product quality and cause rejection. This project analyses steel-surface images and quantifies visible defect regions using classical image-processing techniques instead of AI-based image classification. The pipeline is implemented in Python with OpenCV, NumPy and Pandas. Each image is converted to grayscale, smoothed, corrected for uneven illumination by subtracting an estimated background, thresholded with Otsu’s method, cleaned with morphological opening and closing, and segmented into connected components. Region-level measurements (area, bounding box, aspect ratio and circularity) and image-level metrics such as defect area and defect percentage are computed and stored in CSV files and a SQLite database.
+
+The pipeline was evaluated on six 1600 × 256 pixel steel-strip test images, the same dimensions as the Severstal dataset images, with known ground-truth defect masks covering scratch, patch, inclusion, pitting, mixed-defect and defect-free cases. Across the five defective images the proposed method achieved a mean Intersection-over-Union (IoU) of 0.70, compared with 0.02 for plain Otsu thresholding and 0.31 for adaptive thresholding, and it produced no false detections on the defect-free image. The results are presented through original, processed and detected-defect image views, statistical charts and a consolidated dashboard, and each result is interpreted for automated quality inspection, for example by flagging strips whose defect percentage exceeds an inspection limit.
+
+Keywords: Steel Surface Defects, Image Processing, OpenCV, Otsu Thresholding, Morphological Operations, Connected Components, Defect Quantification, Data Visualization, SQLite, Automated Quality Inspection
+
+Introduction
+
+A digital grayscale image is a two-dimensional matrix I(x, y) of intensity values from 0 (black) to 255 (white). Steel-surface inspection treats a defect as a connected group of pixels whose intensity differs significantly from the surrounding normal surface. Colour images are first reduced to a single channel using the luminance relation Y = 0.299R + 0.587G + 0.114B. Because sensor noise and rolling texture produce small intensity fluctuations, the image is smoothed with a Gaussian filter before analysis. Real steel strips are also unevenly lit, so a plain global threshold fails; the slowly varying background is therefore estimated (median filtering followed by Gaussian smoothing) and subtracted to obtain a flat-field image in which defects stand out. Thresholding then converts this image into a binary mask, and Otsu’s method selects the threshold automatically by maximising the between-class variance of the intensity histogram. Morphological opening removes isolated noise pixels and closing fills small gaps inside a defect. Finally, connected-component analysis with 8-connectivity labels each group of foreground pixels as one candidate defect region.
+
+Once regions are identified they are measured. The defect area is the pixel count of a region, and the defect percentage is the total defect area divided by the image area. Shape descriptors help to tell defect types apart: the aspect ratio (longer side divided by shorter side of the bounding box) is large for scratches, circularity (4πA/P²) is close to 1 for compact inclusions and pits, and area separates small pits from large patches. Statistical tools from data analysis are applied to these measurements: mean, median, standard deviation, percentiles, correlation between area and aspect ratio, and the inter-quartile-range (IQR) rule for outlier regions. Segmentation quality is verified using the Intersection-over-Union (IoU) between the detected mask and a ground-truth mask. This project follows the classical, rule-based route to defect analysis; no machine-learning classifier or prediction model is used, so every result can be traced to an explicit formula and a visible image operation.
+
+Literature Review
+
+Vision-based inspection of flat steel products has been studied for several decades. Survey papers such as Neogi et al. (2014) and Luo et al. (2020) group surface-defect detection methods into statistical, spectral, model-based and learning-based families and describe the typical defects of hot- and cold-rolled strip, including scratches, inclusions, patches, pitting and crazing. The surveys note that illumination variation, low defect contrast, and the similarity between defects and normal rolling texture are the main practical difficulties, and that simple, interpretable methods are still widely used on production lines because they are fast and easy to tune.
+
+The building blocks of such methods are standard in digital image processing (Gonzalez and Woods, 2018). Otsu (1979) proposed selecting a global threshold by maximising the between-class variance of the grey-level histogram, which remains one of the most used automatic thresholding techniques. Morphological opening and closing are used to clean binary masks, and connected-component and contour analysis (for example the border-following algorithm of Suzuki and Abe, 1985) provide the region measurements that make quantitative reporting possible. Where lighting is uneven, background estimation and subtraction, or locally adaptive thresholds, are commonly applied before thresholding. OpenCV (Bradski, 2000) implements all of these operations and is combined with NumPy (Harris et al., 2020) and Pandas (McKinney, 2010) for numerical processing and tabular analysis.
+
+More recently, deep-learning segmentation models trained on large labelled datasets, such as the one released for the Severstal Steel Defect Detection competition, have achieved strong results, but they require annotated masks, considerable computing resources and offer limited explanation of why a pixel was flagged. This project builds on the classical methods instead: it combines flat-field correction, Otsu thresholding, morphology and connected components with data-analysis tools (Pandas, SQLite, Matplotlib and Seaborn) to measure, compare and visualize defects in a transparent way suited to automated quality inspection.
+
+Objectives
+
+To develop a Python and OpenCV pipeline that reads steel-surface images, converts them to grayscale, applies thresholding and basic image-processing operations, and identifies connected defect regions without AI-based classification.
+
+To quantify defects by calculating defect area, percentage of image area, aspect ratio and circularity, to compare these characteristics across images, and to store raw and processed records in CSV files and a SQLite database.
+
+To visualize the original, processed and detected-defect images together with statistical charts and a dashboard, and to interpret the results for automated quality inspection.
+
+Methodology
+
+Architectural Diagram
+
+The system takes steel-strip images through eight stages (Figure 1). Pre-processing and flat-field correction normalise lighting; thresholding and morphology produce a clean binary mask; connected-component analysis extracts defect regions; and the measured values are stored in CSV/SQLite and shown as charts, a dashboard and an inspection report.
+
+Figure 1: Architectural Diagram
+
+Hardware and Software Requirements
+
+Hardware Requirements:
+
+Computer or laptop with at least 8 GB RAM and an Intel i5 (or equivalent) processor
+
+At least 5 GB of free storage for the dataset images and generated outputs
+
+Internet connection to download the Kaggle dataset and Python packages
+
+Software Requirements:
+
+Operating system: Windows, Linux (Ubuntu) or macOS
+
+Python 3.10 or later with OpenCV (opencv-python), NumPy, Pandas, Matplotlib and Seaborn; sqlite3 from the standard library
+
+Development environment: Jupyter Notebook, VS Code or PyCharm
+
+Dataset: Severstal Steel Defect Detection images (1600 × 256 pixels), Kaggle competition dataset
+
+Working Principle
+
+The working principle is built on the following mathematical concepts.
+
+Grayscale and background correction. A colour pixel is reduced to Y = 0.299R + 0.587G + 0.114B. The background is estimated as B = Gσ * median₅₁(I), the Gaussian-smoothed 51 × 51 median of the image, and the flat-field image is F(x, y) = B(x, y) − I(x, y). Defects are darker than steel, so they appear as bright pixels in F, and the uneven illumination cancels out.
+
+Thresholding. Otsu’s method searches the grey levels t for the value that maximises the between-class variance σb²(t) = ω₀(t)·ω₁(t)·[μ₀(t) − μ₁(t)]², where ω and μ are the weight and mean of the background and defect classes. To avoid reporting noise on clean images the final threshold is T = max(t_Otsu, μF + 4σF), and the mask is M = (F > T).
+
+Morphology and region analysis. Opening A∘S = (A ⊖ S) ⊕ S removes isolated noise, and closing A•S = (A ⊕ S) ⊖ S fills small gaps. Connected components (8-connectivity) label the regions, and components smaller than 40 pixels are discarded. For every region the program computes area A, aspect ratio = max(w, h)/min(w, h) and circularity = 4πA/P².
+
+Quantification and statistics. Defect % = (Σ defect pixels / (H × W)) × 100. Region areas are summarised with mean, median, standard deviation and quartiles; outlier regions satisfy A > Q3 + 1.5·IQR; the Pearson correlation links area with aspect ratio. Regions are labelled by simple rules (aspect ratio ≥ 4: scratch-like; area ≥ 1500 px: patch; area < 250 px: inclusion/pit; otherwise blob). Segmentation accuracy is measured as IoU = |P ∩ G| / |P ∪ G|, where P is the predicted mask and G the ground truth. An image with a defect percentage above 0.5% is flagged for inspection.
+
+Software Implementation
+
+Algorithm.
+
+1.  Read each image and convert it to grayscale (cv2.imread, grayscale flag).
+
+2.  Smooth with a 5 × 5 Gaussian filter.
+
+3.  Estimate the background with a 51 × 51 median filter followed by Gaussian smoothing; compute the flat-field image F = background − image.
+
+4.  Compute Otsu’s threshold on F; set T = max(t_Otsu, mean(F) + 4·std(F)); create the binary mask F > T.
+
+5.  Apply morphological opening (3 × 3) and closing (7 × 7).
+
+6.  Label connected components; discard components smaller than 40 pixels.
+
+7.  For each region record bounding box, area, aspect ratio, circularity and rule-based class; compute defect area and defect % per image.
+
+8.  Save records to CSV and SQLite; draw the original, grayscale, thresholded and detected images, the statistical charts and the dashboard; write the inspection report.
+
+Program (core functions). The complete script, steel_defect_analysis.py, also creates the test images, the figures and the dashboard; the central processing functions are shown below.
+
+def analyse(gray):
+
+"""Return dict of intermediate images and detected-region table."""
+
+blur = cv2.GaussianBlur(gray, (5, 5), 0)
+
+# background (illumination) estimate removed -> flat-field image
+
+bg = cv2.GaussianBlur(cv2.medianBlur(blur, 51), (0, 0), 25)
+
+flat = cv2.subtract(bg, blur)          # defects are darker than background -> positive
+
+flat = cv2.normalize(flat, None, 0, 255, cv2.NORM_MINMAX)
+
+# global threshold (Otsu) on the flat-field image
+
+otsu_t, _ = cv2.threshold(flat, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+# stricter floor so a clean image with only noise yields nothing
+
+floor = np.mean(flat) + 4 * np.std(flat)
+
+t = max(otsu_t, floor)
+
+binary = (flat > t).astype(np.uint8) * 255
+
+k3 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+
+k7 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+
+clean = cv2.morphologyEx(binary, cv2.MORPH_OPEN, k3)       # remove isolated noise
+
+clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k7)       # fill small gaps
+
+n, lab, stats, cent = cv2.connectedComponentsWithStats(clean, connectivity=8)
+
+keep = np.zeros_like(clean)
+
+rows = []
+
+for i in range(1, n):
+
+x, y, w, h, a = stats[i]
+
+if a < MIN_AREA:
+
+continue
+
+keep[lab == i] = 255
+
+comp = (lab == i).astype(np.uint8)
+
+cnts, _ = cv2.findContours(comp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+per = cv2.arcLength(cnts[0], True)
+
+circ = 4 * np.pi * a / (per ** 2 + 1e-9)
+
+rows.append(dict(region_id=len(rows) + 1, x=x, y=y, width=w, height=h, area_px=int(a),
+
+aspect_ratio=round(max(w, h) / max(1, min(w, h)), 2),
+
+circularity=round(float(circ), 3),
+
+cx=round(cent[i][0], 1), cy=round(cent[i][1], 1)))
+
+return dict(blur=blur, flat=flat, binary=binary, clean=clean, keep=keep, thr=t), pd.DataFrame(rows)
+
+def classify(r):
+
+"""Rule-based (not ML) shape labelling of a detected region."""
+
+if r.aspect_ratio >= 4:
+
+return "Scratch-like"
+
+if r.area_px >= 1500:
+
+return "Patch"
+
+if r.area_px < 250:
+
+return "Inclusion/Pit"
+
+return "Blob"
+
+How the code solves the problem. The function analyse() applies the pre-processing, flat-field correction, thresholding and morphology steps and then uses cv2.connectedComponentsWithStats to obtain the area and bounding box of every component. Components below the minimum area are ignored as noise, and the remaining regions are measured and returned as a Pandas DataFrame together with the intermediate images used for visualization. The function classify() assigns a shape-based label using simple rules. The main program loops over all images, computes the per-image defect percentage, writes the results to CSV and SQLite, and produces the charts and dashboard. Running the script with --input_dir applies exactly the same procedure to a folder of Severstal images.
+
+Results and Discussion
+
+The pipeline was executed on six steel-strip test images of 1600 × 256 pixels, the same size as the Severstal images. The test images contain textured steel with rolling streaks, noise and uneven lighting, and each defective image has a known ground-truth mask: scratches (steel_001), a patch (steel_002), inclusions (steel_003), a pitting cluster (steel_004), a mixed case (steel_005) and a defect-free control (steel_006). Figure 2 shows the processing stages for the most defective image, and Figure 3 shows the original and detected images for the whole set.
+
+Figure 2: Original, background-corrected, thresholded, cleaned and detected-defect images (steel_005)
+
+Figure 3: Original and detected defect regions for all test images (red = defect pixels, green = bounding boxes)
+
+Table 1 lists the image-level results. The total number of detected regions is 34, covering 12231 defect pixels.
+
+Table 1: Image-level defect measurements
+
+Image
+
+Defect type (ground truth)
+
+Regions
+
+Defect area (px)
+
+Defect %
+
+Largest region (px)
+
+IoU
+
+steel_001
+
+Scratches
+
+2
+
+1864
+
+0.455
+
+1023
+
+0.972
+
+steel_002
+
+Patch
+
+1
+
+3965
+
+0.968
+
+3965
+
+0.825
+
+steel_003
+
+Inclusions
+
+8
+
+786
+
+0.192
+
+147
+
+0.771
+
+steel_004
+
+Pitting cluster
+
+11
+
+690
+
+0.168
+
+112
+
+0.366
+
+steel_005
+
+Mixed (scratch + patch + inclusion)
+
+12
+
+4926
+
+1.203
+
+2234
+
+0.589
+
+steel_006
+
+None (control)
+
+0
+
+0
+
+0.000
+
+0
+
+1.000
+
+Figure 4: Defect percentage per image
+
+The defect percentage ranges from 0% (steel_006) to 1.20% (steel_005). Two images, steel_002 and steel_005, exceed the 0.5% inspection limit and are flagged, while images with many tiny defects (steel_003 and steel_004) cover only 0.19% and 0.17% of the surface.
+
+Figure 5: Distribution of detected defect sizes
+
+Region sizes are strongly right-skewed: the median region area is 89 pixels, but the largest is 3965 pixels. Of all regions, 6 are outliers by the IQR rule, and they correspond to scratches and the patch. Most defects are therefore small, and a few large ones dominate the defective area.
+
+Figure 6: Region area versus aspect ratio
+
+Compact inclusions and pits stay close to an aspect ratio of 1, whereas scratch-like regions reach aspect ratios above 20. The Pearson correlation between area and aspect ratio is 0.47, because long scratches also tend to be larger. The rule-based classes found 28 inclusion/pit, 1 patch, 5 scratch-like.
+
+Figure 7: Spatial distribution of defect pixels across the strip
+
+The heatmap accumulates defect pixels by position. Dense cells show where defects cluster along the strip length and width, which would point maintenance staff to the corresponding roll or process position.
+
+Table 2: Region statistics by shape class
+
+Class
+
+Regions
+
+Mean area (px)
+
+Largest area (px)
+
+Mean aspect ratio
+
+Inclusion/Pit
+
+28
+
+79.3
+
+147
+
+1.13
+
+Patch
+
+1
+
+3965.0
+
+3965
+
+1.27
+
+Scratch-like
+
+5
+
+1209.2
+
+2234
+
+14.66
+
+Figure 8: Segmentation accuracy (IoU) of the proposed method, plain Otsu and adaptive thresholding
+
+Plain Otsu thresholding on the raw image fails because of the uneven illumination (mean IoU 0.02), and adaptive thresholding reaches 0.31. The flat-field correction followed by Otsu thresholding raises the mean IoU to 0.70. Accuracy is highest for steel_001 (scratches) with IoU 0.97 and lowest for steel_004 (pitting cluster) with IoU 0.37, where many very small pits are partly removed by the opening operation and the minimum-area filter.
+
+Figure 9: Defect analysis dashboard
+
+Summary of key results:
+
+The pipeline detected and measured 34 defect regions in the five defective images and none in the defect-free image. The proposed flat-field and Otsu method reached a mean IoU of 0.70, compared with 0.02 (plain Otsu) and 0.31 (adaptive). The images with the largest defect percentage were steel_005 (1.20%) and steel_002 (0.97%).
+
+Interpretation:
+
+Illumination correction is the decisive step, since without it neither a global nor an adaptive threshold separates defects from the background reliably. Long, thin scratches and large patches are segmented well, whereas clusters of very small pits are the hardest case because their pixels are few and are partly removed as noise. In inspection terms, a strip with a few large defects (high defect %) and a strip with many tiny pits (low defect %) need different decisions, which the area, aspect-ratio and class statistics make visible.
+
+Achievement of objectives:
+
+Objective 1 was met by the OpenCV pipeline that reads, converts, thresholds and segments images using classical operations only. Objective 2 was met by the area, percentage, aspect-ratio and circularity measurements, the cross-image comparison and the CSV and SQLite storage. Objective 3 was met by the original, processed and detected image views, the eight charts and tables, and the dashboard, each interpreted in terms of inspection.
+
+Implications:
+
+The same procedure can screen steel strips automatically, flag those above a defect-percentage limit, and report where and what kind of defects occur, reducing manual inspection effort. The accuracy figures reported here were measured on test images with known masks; the program can be applied directly to the Severstal images through its input-folder option, and thresholds such as the minimum area and the inspection limit should be tuned on that data.
+
+Mapping POs and SDGs
+
+Program Outcomes (POs) Mapping
+
+Table 3 maps the Program Outcomes to the project.
+
+Table 3: Mapping of Program Outcomes (POs) to Project Relevance
+
+PO No.
+
+Program Outcome
+
+Relevance
+
+PO1
+
+Engineering Knowledge
+
+Applied image-processing, statistical and programming knowledge to detect and measure steel defects.
+
+PO2
+
+Problem Analysis
+
+Analysed how uneven lighting, noise and defect shape affect defect detection and identified suitable operations.
+
+PO3
+
+Design/Development of Solutions
+
+Designed an eight-stage pipeline with flat-field correction, thresholding and region measurement for quality inspection.
+
+PO4
+
+Conduct Investigations of Complex Problems
+
+Investigated defect size, shape and location with statistics, ground-truth IoU checks and method comparison.
+
+PO5
+
+Engineering Tool Usage
+
+Used Python, OpenCV, NumPy, Pandas, Matplotlib, Seaborn and SQLite for processing, storage and visualization.
+
+PO6
+
+The Engineer and The World
+
+Supports automated quality inspection in steel manufacturing, reducing manual inspection and defective output.
+
+PO7
+
+Ethics
+
+Used the public dataset responsibly, reported accuracy honestly and kept the method transparent and reproducible.
+
+PO8
+
+Individual and Collaborative Team work
+
+Team members shared the work on coding, analysis, visualization and report writing.
+
+PO9
+
+Communication
+
+Communicated results through annotated images, charts, tables, a dashboard and this structured report.
+
+PO10
+
+Project Management and Finance
+
+Planned the work in stages and considered computing cost and feasibility using free, open-source tools.
+
+PO11
+
+Life-Long Learning
+
+Strengthened skills in image processing, data analysis and visualization for further study.
+
+Sustainable Development Goals (SDGs) Mapping
+
+Table 4 maps the most relevant Sustainable Development Goals to the project.
+
+Table 4: Mapping of Sustainable Development Goals (SDGs) to Project Relevance
+
+SDG No.
+
+Goal
+
+Relevance
+
+SDG 4
+
+Quality Education
+
+Gives students hands-on experience in applying Python and image analysis to a real engineering problem.
+
+SDG 8
+
+Decent Work and Economic Growth
+
+Improves productivity and working conditions by automating repetitive visual inspection of steel.
+
+SDG 9
+
+Industry, Innovation and Infrastructure
+
+Promotes innovation in manufacturing through data-driven, automated quality inspection.
+
+SDG 12
+
+Responsible Consumption and Production
+
+Reduces material waste by detecting defects early and avoiding rejected or scrapped steel.
+
+Conclusion
+
+The project implemented a classical image-processing pipeline in Python for analysing steel-surface defects. Images are converted to grayscale, corrected for uneven illumination, thresholded with Otsu’s method, cleaned with morphological operations and segmented into connected regions whose area, percentage of image area, aspect ratio and circularity are measured, stored in CSV and SQLite, compared across images and visualized in charts and a dashboard. On the ground-truth test images the method reached a mean IoU of 0.70, clearly better than plain or adaptive thresholding, without using any machine-learning model.
+
+For future work, the pipeline should be run on the full Severstal image set to tune the minimum-area and inspection thresholds on real data. Further improvements include texture filters or FFT-based analysis for faint patches and crazing, pixel-to-millimetre calibration so that areas are reported in mm², class-specific thresholds for small pits, and a live dashboard connected to a camera line. Machine-learning models can be studied later as a comparison to the classical baseline.
+
+Bibliography
+
+Online Resources:
+
+Severstal: Steel Defect Detection, Kaggle competition dataset: https://www.kaggle.com/c/severstal-steel-defect-detection
+
+OpenCV documentation: https://docs.opencv.org/
+
+NumPy documentation: https://numpy.org/doc/
+
+Pandas documentation: https://pandas.pydata.org/docs/
+
+Matplotlib documentation: https://matplotlib.org/stable/
+
+Seaborn documentation: https://seaborn.pydata.org/
+
+Python sqlite3 module: https://docs.python.org/3/library/sqlite3.html
+
+Research Article References:
+
+Otsu, N. (1979). A threshold selection method from gray-level histograms. IEEE Transactions on Systems, Man, and Cybernetics, 9(1), 62–66.
+
+Neogi, N., Mohanta, D. K., & Dutta, P. K. (2014). Review of vision-based steel surface inspection systems. EURASIP Journal on Image and Video Processing, 2014, 50.
+
+Luo, Q., Fang, X., Liu, L., Yang, C., & Sun, Y. (2020). Automated visual defect detection for flat steel surface: A survey. IEEE Transactions on Instrumentation and Measurement, 69(3), 626–644.
+
+Gonzalez, R. C., & Woods, R. E. (2018). Digital Image Processing (4th ed.). Pearson.
+
+Suzuki, S., & Abe, K. (1985). Topological structural analysis of digitized binary images by border following. Computer Vision, Graphics, and Image Processing, 30(1), 32–46.
+
+Bradski, G. (2000). The OpenCV Library. Dr. Dobb’s Journal of Software Tools.
+
+Harris, C. R., et al. (2020). Array programming with NumPy. Nature, 585, 357–362.
+
+McKinney, W. (2010). Data structures for statistical computing in Python. Proceedings of the 9th Python in Science Conference, 56–61.

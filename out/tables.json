@@ -1,0 +1,186 @@
+[
+  [
+    [
+      "Image",
+      "Defect type (ground truth)",
+      "Regions",
+      "Defect area (px)",
+      "Defect %",
+      "Largest region (px)",
+      "IoU"
+    ],
+    [
+      "steel_001",
+      "Scratches",
+      "2",
+      "1864",
+      "0.455",
+      "1023",
+      "0.972"
+    ],
+    [
+      "steel_002",
+      "Patch",
+      "1",
+      "3965",
+      "0.968",
+      "3965",
+      "0.825"
+    ],
+    [
+      "steel_003",
+      "Inclusions",
+      "8",
+      "786",
+      "0.192",
+      "147",
+      "0.771"
+    ],
+    [
+      "steel_004",
+      "Pitting cluster",
+      "11",
+      "690",
+      "0.168",
+      "112",
+      "0.366"
+    ],
+    [
+      "steel_005",
+      "Mixed (scratch + patch + inclusion)",
+      "12",
+      "4926",
+      "1.203",
+      "2234",
+      "0.589"
+    ],
+    [
+      "steel_006",
+      "None (control)",
+      "0",
+      "0",
+      "0.000",
+      "0",
+      "1.000"
+    ]
+  ],
+  [
+    [
+      "Class",
+      "Regions",
+      "Mean area (px)",
+      "Largest area (px)",
+      "Mean aspect ratio"
+    ],
+    [
+      "Inclusion/Pit",
+      "28",
+      "79.3",
+      "147",
+      "1.13"
+    ],
+    [
+      "Patch",
+      "1",
+      "3965.0",
+      "3965",
+      "1.27"
+    ],
+    [
+      "Scratch-like",
+      "5",
+      "1209.2",
+      "2234",
+      "14.66"
+    ]
+  ],
+  [
+    [
+      "PO No.",
+      "Program Outcome",
+      "Relevance"
+    ],
+    [
+      "PO1",
+      "Engineering Knowledge",
+      "Applied image-processing, statistical and programming knowledge to detect and measure steel defects."
+    ],
+    [
+      "PO2",
+      "Problem Analysis",
+      "Analysed how uneven lighting, noise and defect shape affect defect detection and identified suitable operations."
+    ],
+    [
+      "PO3",
+      "Design/Development of Solutions",
+      "Designed an eight-stage pipeline with flat-field correction, thresholding and region measurement for quality inspection."
+    ],
+    [
+      "PO4",
+      "Conduct Investigations of Complex Problems",
+      "Investigated defect size, shape and location with statistics, ground-truth IoU checks and method comparison."
+    ],
+    [
+      "PO5",
+      "Engineering Tool Usage",
+      "Used Python, OpenCV, NumPy, Pandas, Matplotlib, Seaborn and SQLite for processing, storage and visualization."
+    ],
+    [
+      "PO6",
+      "The Engineer and The World",
+      "Supports automated quality inspection in steel manufacturing, reducing manual inspection and defective output."
+    ],
+    [
+      "PO7",
+      "Ethics",
+      "Used the public dataset responsibly, reported accuracy honestly and kept the method transparent and reproducible."
+    ],
+    [
+      "PO8",
+      "Individual and Collaborative Team work",
+      "Team members shared the work on coding, analysis, visualization and report writing."
+    ],
+    [
+      "PO9",
+      "Communication",
+      "Communicated results through annotated images, charts, tables, a dashboard and this structured report."
+    ],
+    [
+      "PO10",
+      "Project Management and Finance",
+      "Planned the work in stages and considered computing cost and feasibility using free, open-source tools."
+    ],
+    [
+      "PO11",
+      "Life-Long Learning",
+      "Strengthened skills in image processing, data analysis and visualization for further study."
+    ]
+  ],
+  [
+    [
+      "SDG No.",
+      "Goal",
+      "Relevance"
+    ],
+    [
+      "SDG 4",
+      "Quality Education",
+      "Gives students hands-on experience in applying Python and image analysis to a real engineering problem."
+    ],
+    [
+      "SDG 8",
+      "Decent Work and Economic Growth",
+      "Improves productivity and working conditions by automating repetitive visual inspection of steel."
+    ],
+    [
+      "SDG 9",
+      "Industry, Innovation and Infrastructure",
+      "Promotes innovation in manufacturing through data-driven, automated quality inspection."
+    ],
+    [
+      "SDG 12",
+      "Responsible Consumption and Production",
+      "Reduces material waste by detecting defects early and avoiding rejected or scrapped steel."
+    ]
+  ]
+]

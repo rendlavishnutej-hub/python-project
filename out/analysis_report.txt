@@ -1,0 +1,8 @@
+STEEL SURFACE DEFECT ANALYSIS REPORT
+========================================
+steel_001: regions=2, defect=0.455% -> MINOR DEFECTS
+steel_002: regions=1, defect=0.968% -> REJECT / INSPECT
+steel_003: regions=8, defect=0.192% -> MINOR DEFECTS
+steel_004: regions=11, defect=0.168% -> MINOR DEFECTS
+steel_005: regions=12, defect=1.203% -> REJECT / INSPECT
+steel_006: regions=0, defect=0.000% -> PASS

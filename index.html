@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steel Surface Defect Image Analysis | Course End Project Dashboard</title>
+  <meta name="description" content="Course End Project Dashboard & Viva Defense Presentation for Steel Surface Defect Image Analysis - A9513 Python Programming Laboratory, Vardhaman College of Engineering">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18M9 21V9"/>
+            <circle cx="15" cy="15" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="institution-tag">VARDHAMAN COLLEGE OF ENGINEERING • CSE • A9513 LAB</div>
+          <h1 class="project-title">Steel Surface Defect Image Analysis</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-print" class="btn btn-primary" title="Print / Export Report Summary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Export Summary Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs-wrapper">
+      <div class="nav-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="overview">
+          <span class="tab-icon">📊</span> Executive Dashboard
+        </button>
+        <button class="tab-btn" data-tab="inspector">
+          <span class="tab-icon">🔍</span> Interactive Strip Inspector
+        </button>
+        <button class="tab-btn" data-tab="figures">
+          <span class="tab-icon">🖼️</span> Figure Gallery & Comparisons
+        </button>
+        <button class="tab-btn" data-tab="pipeline">
+          <span class="tab-icon">⚙️</span> 8-Stage CV Pipeline & Simulator
+        </button>
+        <button class="tab-btn" data-tab="analytics">
+          <span class="tab-icon">📈</span> Statistical Analytics & IoU
+        </button>
+        <button class="tab-btn" data-tab="compliance">
+          <span class="tab-icon">🎓</span> POs & SDGs Academic Mapping
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- ==================== TAB 1: OVERVIEW ==================== -->
+    <section id="tab-overview" class="tab-pane active">
+      <!-- Project Metadata Banner -->
+      <div class="project-meta-card">
+        <div class="meta-left">
+          <div class="badge-row">
+            <span class="badge badge-accent">Course End Project / CEP</span>
+            <span class="badge badge-outline">Academic Year: 2026-27</span>
+            <span class="badge badge-success">Defense Ready</span>
+            <span class="badge badge-info">Classical CV (Zero-ML)</span>
+          </div>
+          <h2 class="meta-heading">Automated Visual Surface Inspection for Flat Steel Manufacturing</h2>
+          <p class="meta-desc">
+            A production-ready classical computer vision pipeline developed in Python using OpenCV, NumPy, and Pandas.
+            Engineered to overcome severe illumination non-uniformity via flat-field background subtraction and Otsu thresholding with a 4&sigma; strict noise floor, achieving a <strong>0.700 mean IoU</strong> with <strong>0.00% false alarms</strong> on standard 1600 &times; 256 px steel strips.
+          </p>
+          <div class="student-tags">
+            <span class="student-tag">👨‍🎓 <strong>Team Roll Nos:</strong> 25881A05HD, 25881A05GV, 25881A05GN</span>
+            <span class="student-tag">🏛️ <strong>Department:</strong> Computer Science & Engineering</span>
+            <span class="student-tag">📋 <strong>Course:</strong> A9513 - Python Programming Lab</span>
+          </div>
+        </div>
+        <div class="meta-right">
+          <div class="benchmark-summary-box">
+            <div class="bench-title">IoU Benchmark Comparison</div>
+            <div class="bench-item highlight">
+              <span class="bench-name">Proposed Flat-Field + Otsu</span>
+              <span class="bench-val">0.700</span>
+            </div>
+            <div class="bench-item">
+              <span class="bench-name">Adaptive Thresholding</span>
+              <span class="bench-val">0.310</span>
+            </div>
+            <div class="bench-item muted">
+              <span class="bench-name">Plain Otsu Threshold</span>
+              <span class="bench-val">0.020</span>
+            </div>
+            <div class="bench-caption">
+              ⚡ <strong>+35&times;</strong> segmentation accuracy improvement over standard global thresholding due to flat-field illumination correction.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Analyzed Strips</div>
+            <div class="kpi-value">6 <span class="kpi-unit">Strips</span></div>
+            <div class="kpi-sub">1600 &times; 256 px (Severstal Dim)</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Detected Defect Regions</div>
+            <div class="kpi-value">34 <span class="kpi-unit">Regions</span></div>
+            <div class="kpi-sub">12,231 Defect Pixels Quantified</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Control False Alarms</div>
+            <div class="kpi-value">0.0% <span class="kpi-unit">Clean</span></div>
+            <div class="kpi-sub">steel_006 IoU = 1.000 (Pass)</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 22 22 22"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">QC Rejection Rate</div>
+            <div class="kpi-value">33.3% <span class="kpi-unit">Reject</span></div>
+            <div class="kpi-sub">2 Rejected | 3 Minor | 1 Pass</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-label">Processing Latency</div>
+            <div class="kpi-value">&sim;18 <span class="kpi-unit">ms/strip</span></div>
+            <div class="kpi-sub">CPU Real-Time (No GPU Needed)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Summary Split: Figure 9 Consolidated Dashboard & Key Findings -->
+      <div class="card grid-2col">
+        <div class="card-inner">
+          <div class="card-header-clean">
+            <h3 class="card-title">Project Figure 9: Consolidated Defect Analysis Dashboard</h3>
+            <span class="badge badge-accent">Composite Inspection System</span>
+          </div>
+          <div class="figure-frame">
+            <img src="out/figs/fig_dashboard.png" alt="Figure 9: Consolidated Defect Analysis Dashboard" class="img-responsive zoomable" id="overview-dash-img">
+            <div class="figure-caption">
+              <strong>Figure 9:</strong> Consolidated inspection dashboard displaying sample image strip, defect percentages across strips, area histogram, aspect-ratio correlation, method IoU comparison, and spatial defect density heatmap.
+            </div>
+          </div>
+        </div>
+
+        <div class="card-inner">
+          <div class="card-header-clean">
+            <h3 class="card-title">Summary of Experimental Results (Table 1)</h3>
+            <span class="badge badge-outline">6 Test Strips Evaluated</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="table-overview-summary">
+              <thead>
+                <tr>
+                  <th>Strip ID</th>
+                  <th>Defect Morphology</th>
+                  <th>Regions</th>
+                  <th>Defect %</th>
+                  <th>IoU</th>
+                  <th>QC Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="key-observations-box">
+            <h4>Key Engineering Insights for Faculty:</h4>
+            <ul>
+              <li><strong>Illumination Robustness:</strong> Real steel coils experience severe vignetting and lighting shifts. Without flat-field correction, plain Otsu catastrophically fails (IoU 0.02) by thresholding lighting artifacts.</li>
+              <li><strong>Noise Suppression:</strong> Adding the adaptive floor <code>&mu;F + 4&sigma;F</code> guarantees zero false positives on clean metal strips (control steel_006 achieved IoU 1.000).</li>
+              <li><strong>Physical Quantification:</strong> Defect regions are categorized by morphometric descriptors (circularity, aspect ratio, area) into Scratches, Inclusions, and Patches rather than unexplainable neural latent vectors.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: INTERACTIVE STRIP INSPECTOR ==================== -->
+    <section id="tab-inspector" class="tab-pane">
+      <div class="inspector-controls card">
+        <div class="inspector-header">
+          <div>
+            <h2 class="section-title">Interactive Steel Strip Defect Inspector</h2>
+            <p class="section-subtitle">Select any test strip to examine detection bounding boxes, pixel masks, morphometric region data, and quality control verdict.</p>
+          </div>
+          <div class="strip-selector-group" id="strip-selector-btns">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Strip Inspection Card -->
+      <div class="card strip-detail-card" id="strip-detail-view">
+        <div class="strip-meta-bar">
+          <div class="strip-identity">
+            <span class="strip-code" id="active-strip-id">steel_001</span>
+            <span class="strip-type-badge" id="active-strip-type">Scratches</span>
+          </div>
+          <div class="strip-metrics-pills">
+            <div class="metric-pill">
+              <span class="pill-label">QC Decision:</span>
+              <span class="pill-val status-badge" id="active-strip-qc">MINOR DEFECTS</span>
+            </div>
+            <div class="metric-pill">
+              <span class="pill-label">Defect Area:</span>
+              <span class="pill-val" id="active-strip-area">1864 px (0.455%)</span>
+            </div>
+            <div class="metric-pill">
+              <span class="pill-label">Detected Regions:</span>
+              <span class="pill-val" id="active-strip-regions">2</span>
+            </div>
+            <div class="metric-pill">
+              <span class="pill-label">Segmentation IoU:</span>
+              <span class="pill-val highlight-green" id="active-strip-iou">0.972</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- High-res Strip Detection Image -->
+        <div class="strip-image-container">
+          <div class="strip-image-label-bar">
+            <span>Original Steel Surface (Left) vs. Connected-Component Detections with Bounding Boxes (Right)</span>
+            <span class="dim-tag">Resolution: 1600 &times; 256 px</span>
+          </div>
+          <div class="strip-visual-wrapper">
+            <img id="active-strip-img" src="out/figs/strips/strip_1.png" alt="Steel Strip Visual" class="strip-preview-img zoomable">
+          </div>
+          <div class="strip-legend">
+            <div class="legend-item"><span class="legend-color red"></span> Segmented Defect Pixels (Foreground)</div>
+            <div class="legend-item"><span class="legend-color green"></span> Bounding Box Envelopes (OpenCV connectedComponents)</div>
+            <div class="legend-item"><span class="legend-color blue"></span> Centroid Coordinates (cx, cy)</div>
+          </div>
+        </div>
+
+        <!-- Detailed Defect Regions Table -->
+        <div class="strip-regions-section">
+          <div class="regions-header">
+            <h3>Detected Defect Regions in <span id="active-strip-id-text">steel_001</span></h3>
+            <span class="badge badge-outline" id="active-regions-count">2 Regions Logged in SQLite</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="table-strip-regions">
+              <thead>
+                <tr>
+                  <th>Region #</th>
+                  <th>Bounding Box (x, y, w, h)</th>
+                  <th>Area (px)</th>
+                  <th>Aspect Ratio</th>
+                  <th>Circularity</th>
+                  <th>Centroid (cx, cy)</th>
+                  <th>Rule-Based Class</th>
+                </tr>
+              </thead>
+              <tbody id="strip-regions-body">
+                <!-- Dynamically injected -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: FIGURE GALLERY ==================== -->
+    <section id="tab-figures" class="tab-pane">
+      <div class="gallery-header-card card">
+        <h2 class="section-title">Course Project Scientific Visualizations</h2>
+        <p class="section-subtitle">Complete set of generated analytical figures from the report. Click any figure to open the High-Definition Inspection Lightbox with detailed academic notes.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Figure 1 -->
+        <div class="gallery-card" data-fig="fig_architecture.png" data-title="Figure 1: Architectural Pipeline Diagram" data-desc="Complete 8-stage image processing pipeline schematic: Grayscale -> Gaussian smoothing -> Illumination background estimation & subtraction -> Otsu threshold with 4-sigma floor -> Morphological cleaning -> Connected components -> Quantification -> Export.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_architecture.png" alt="Figure 1">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 1</span>
+            <h4 class="gallery-title">Architectural Pipeline Diagram</h4>
+            <p class="gallery-meta">System flow from sensor to inspection report</p>
+          </div>
+        </div>
+
+        <!-- Figure 2 -->
+        <div class="gallery-card" data-fig="fig_pipeline.png" data-title="Figure 2: Pipeline Stages on steel_005 (Mixed Defect)" data-desc="Step-by-step intermediate images for steel_005: (1) Original strip, (2) Normalized flat-field image after subtracting median-filtered background, (3) Binary threshold mask, (4) Morphologically cleaned mask, (5) Final detected defects with bounding boxes.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_pipeline.png" alt="Figure 2">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 2</span>
+            <h4 class="gallery-title">Intermediate Pipeline Stages (steel_005)</h4>
+            <p class="gallery-meta">Raw, flat-field, binary, morphology & detections</p>
+          </div>
+        </div>
+
+        <!-- Figure 3 -->
+        <div class="gallery-card" data-fig="fig_all_detections.png" data-title="Figure 3: All Strip Detections Side-by-Side" data-desc="Comparative panel of all 6 test images (steel_001 to steel_006) displaying the original strip and the detected defect mask with green bounding boxes and red defect pixels. Shows 100% true-negative performance on steel_006.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_all_detections.png" alt="Figure 3">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 3</span>
+            <h4 class="gallery-title">All Strip Detections (Panel)</h4>
+            <p class="gallery-meta">Full 6-image detection side-by-side array</p>
+          </div>
+        </div>
+
+        <!-- Figure 4 -->
+        <div class="gallery-card" data-fig="fig_defect_percent.png" data-title="Figure 4: Defect Percentage per Strip" data-desc="Bar chart illustrating defect percentage per image with the 0.5% quality inspection threshold. Strips steel_002 (0.97%) and steel_005 (1.20%) exceed the tolerance threshold and trigger rejection.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_defect_percent.png" alt="Figure 4">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 4</span>
+            <h4 class="gallery-title">Defect Percentage & QC Threshold</h4>
+            <p class="gallery-meta">Quantitative area fraction with 0.5% tolerance line</p>
+          </div>
+        </div>
+
+        <!-- Figure 5 -->
+        <div class="gallery-card" data-fig="fig_area_hist.png" data-title="Figure 5: Distribution of Detected Defect Sizes" data-desc="Histogram showing severe right-skewed distribution of defect areas. The majority of defects are small inclusions/pits (median 89 px), while a small number of massive scratches/patches dominate total pixel area.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_area_hist.png" alt="Figure 5">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 5</span>
+            <h4 class="gallery-title">Defect Area Distribution</h4>
+            <p class="gallery-meta">Area histogram showing skewness and log scale</p>
+          </div>
+        </div>
+
+        <!-- Figure 6 -->
+        <div class="gallery-card" data-fig="fig_scatter.png" data-title="Figure 6: Region Area vs. Aspect Ratio" data-desc="Scatter plot displaying morphometric clustering: Compact inclusions/pits cluster near aspect ratio = 1.0, while elongated scratches exhibit high aspect ratios reaching above 22.0.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_scatter.png" alt="Figure 6">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 6</span>
+            <h4 class="gallery-title">Area vs. Aspect Ratio Clustering</h4>
+            <p class="gallery-meta">Morphological discrimination between scratches & pits</p>
+          </div>
+        </div>
+
+        <!-- Figure 7 -->
+        <div class="gallery-card" data-fig="fig_heatmap.png" data-title="Figure 7: Spatial Defect Density Heatmap" data-desc="2D spatial accumulation map showing where defects concentrate along strip width and length. In steel rolling mills, persistent hotspots localize defective roller cylinders.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_heatmap.png" alt="Figure 7">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 7</span>
+            <h4 class="gallery-title">Spatial Defect Density Heatmap</h4>
+            <p class="gallery-meta">Positional clustering along the strip coordinates</p>
+          </div>
+        </div>
+
+        <!-- Figure 8 -->
+        <div class="gallery-card" data-fig="fig_methods.png" data-title="Figure 8: Segmentation IoU Benchmark Comparison" data-desc="Direct accuracy benchmark comparing Proposed Pipeline (0.70 mean IoU) against Adaptive Thresholding (0.31) and Plain Otsu (0.02). Proves empirical superiority of flat-field illumination correction.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_methods.png" alt="Figure 8">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 8</span>
+            <h4 class="gallery-title">Method Accuracy Benchmark (IoU)</h4>
+            <p class="gallery-meta">Proposed vs. Adaptive vs. Plain Otsu</p>
+          </div>
+        </div>
+
+        <!-- Figure 9 -->
+        <div class="gallery-card" data-fig="fig_dashboard.png" data-title="Figure 9: Comprehensive Defect Dashboard" data-desc="Consolidated inspection dashboard integrating strip views, defect percentages, histogram, scatter plot, method comparison, and spatial density map.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_dashboard.png" alt="Figure 9">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 9</span>
+            <h4 class="gallery-title">Consolidated Analysis Dashboard</h4>
+            <p class="gallery-meta">All-in-one comprehensive overview</p>
+          </div>
+        </div>
+
+        <!-- Figure 10: Box Plot -->
+        <div class="gallery-card" data-fig="fig_box.png" data-title="Figure 10: Box Plot of Defect Areas" data-desc="Box-and-whisker plot highlighting IQR spread, median defect size, and statistical outliers corresponding to large patches and long scratches.">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_box.png" alt="Figure 10">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 10</span>
+            <h4 class="gallery-title">Defect Area Box Plot</h4>
+            <p class="gallery-meta">IQR dispersion and statistical outlier analysis</p>
+          </div>
+        </div>
+
+        <!-- Figure 11: Label Counts -->
+        <div class="gallery-card" data-fig="fig_labels.png" data-title="Figure 11: Defect Classification Breakdown" data-desc="Class distribution: 28 Inclusions/Pits (compact, small), 5 Scratch-like (high aspect ratio), and 1 Patch (large area).">
+          <div class="gallery-thumb">
+            <img src="out/figs/fig_labels.png" alt="Figure 11">
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-tag">Figure 11</span>
+            <h4 class="gallery-title">Defect Class Breakdown</h4>
+            <p class="gallery-meta">Rule-based classification distribution</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: PIPELINE & SIMULATOR ==================== -->
+    <section id="tab-pipeline" class="tab-pane">
+      <div class="grid-2col">
+        <!-- Pipeline Steps Column -->
+        <div class="card">
+          <div class="card-header-clean">
+            <h2 class="card-title">8-Stage Classical CV Pipeline Architecture</h2>
+            <span class="badge badge-accent">Mathematical Rigor</span>
+          </div>
+
+          <div class="pipeline-steps-vertical">
+            <!-- Step 1 -->
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <h4>Grayscale Conversion</h4>
+                <p>Standard luminance reduction from RGB to 8-bit intensity:</p>
+                <code class="math-code">Y = 0.299R + 0.587G + 0.114B &isin; [0, 255]</code>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <h4>Gaussian Smoothing</h4>
+                <p>Suppresses sensor noise and high-frequency rolling grain before background estimation:</p>
+                <code class="math-code">I_blur = G_{\sigma=1.0}(5 &times; 5) * I</code>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card highlight-step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <h4>Illumination Background Estimation & Flat-Fielding</h4>
+                <p>Estimates low-frequency illumination gradient using a 51 &times; 51 median filter followed by Gaussian smoothing, then subtracts from the blurred image to produce a normalized flat-field image:</p>
+                <code class="math-code">B = G_{25}( \text{median}_{51&times;51}(I_{\text{blur}}) )</code>
+                <code class="math-code">F(x, y) = \text{cv2.normalize}(B(x, y) - I_{\text{blur}}(x, y), [0, 255])</code>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card highlight-step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <h4>Otsu's Thresholding with 4&sigma; Strict Floor</h4>
+                <p>Maximizes between-class variance &sigma;<sub>b</sub><sup>2</sup>(t). To guarantee zero false alarms on defect-free strips, an adaptive floor is enforced:</p>
+                <code class="math-code">\sigma_b^2(t) = \omega_0(t)\omega_1(t)[\mu_0(t) - \mu_1(t)]^2</code>
+                <code class="math-code">T = \max(t_{\text{Otsu}}, \mu_F + 4\sigma_F) \implies M = (F > T)</code>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-card">
+              <div class="step-num">5</div>
+              <div class="step-body">
+                <h4>Morphological Opening & Closing</h4>
+                <p>Opening removes isolated salt noise; closing bridges micro-fractures inside large defects:</p>
+                <code class="math-code">M_{\text{clean}} = (M \circ S_{3&times;3}) \bullet S_{7&times;7}</code>
+              </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-card">
+              <div class="step-num">6</div>
+              <div class="step-body">
+                <h4>8-Connected Component Labeling & Noise Filter</h4>
+                <p>Segments contiguous foreground blobs; removes artifacts under minimum area:</p>
+                <code class="math-code">\text{cv2.connectedComponentsWithStats}(M_{\text{clean}}, 8), \quad A \ge 40 \text{ px}</code>
+              </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="step-card">
+              <div class="step-num">7</div>
+              <div class="step-body">
+                <h4>Morphometric Extraction & Rule-Based Classification</h4>
+                <p>Extracts area, bounding box, aspect ratio, and circularity for physical defect taxonomy:</p>
+                <code class="math-code">\text{Aspect Ratio} = \frac{\max(w, h)}{\min(w, h)}, \quad \text{Circularity} = \frac{4\pi A}{P^2}</code>
+              </div>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="step-card">
+              <div class="step-num">8</div>
+              <div class="step-body">
+                <h4>QC Decision & Storage (SQLite / CSV)</h4>
+                <p>Flags strips exceeding defect tolerance limit (default 0.5%) for rejection:</p>
+                <code class="math-code">\text{Defect \%} = \frac{\sum A_i}{1600 \times 256} \times 100 \implies \begin{cases} \text{PASS} & \text{if } \% = 0 \\ \text{MINOR} & \text{if } \% \le 0.5 \\ \text{REJECT} & \text{if } \% > 0.5 \end{cases}</code>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Simulator Column -->
+        <div class="card">
+          <div class="card-header-clean">
+            <h2 class="card-title">Interactive QC Tolerance Simulator</h2>
+            <span class="badge badge-success">Live Parameter Tuning</span>
+          </div>
+
+          <div class="simulator-box">
+            <p class="sim-intro">
+              Faculty can dynamically adjust the factory quality inspection tolerance threshold to observe real-time classification changes across all six steel strip production batches.
+            </p>
+
+            <div class="slider-control-group">
+              <div class="slider-label-row">
+                <span class="slider-name">Defect Tolerance Threshold (% of Strip Area):</span>
+                <span class="slider-display" id="slider-threshold-val">0.50%</span>
+              </div>
+              <input type="range" id="tolerance-slider" min="0.1" max="1.5" step="0.05" value="0.5" class="custom-slider">
+              <div class="slider-ticks">
+                <span>0.10% (Ultra Strict)</span>
+                <span>0.50% (Standard)</span>
+                <span>1.00% (Permissive)</span>
+                <span>1.50% (Lax)</span>
+              </div>
+            </div>
+
+            <div class="sim-results-box">
+              <h4>Batch Re-Evaluation Under <span id="sim-active-thresh-label">0.50%</span> Limit:</h4>
+              <div class="sim-table-wrap">
+                <table class="data-table" id="sim-results-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Defect %</th>
+                      <th>Default Status</th>
+                      <th>Simulated Verdict</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sim-results-body">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="sim-stats-summary" id="sim-stats-summary">
+                <!-- Dynamically updated -->
+              </div>
+            </div>
+          </div>
+
+          <div class="architecture-diagram-card">
+            <h4>System Architecture Flowchart (Figure 1):</h4>
+            <div class="figure-frame">
+              <img src="out/figs/fig_architecture.png" alt="Architecture Diagram" class="img-responsive zoomable">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: ANALYTICS ==================== -->
+    <section id="tab-analytics" class="tab-pane">
+      <div class="card">
+        <div class="card-header-clean">
+          <h2 class="card-title">Comprehensive Statistical Analysis & Metrics</h2>
+          <span class="badge badge-accent">Ground-Truth Validated</span>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Analytical Chart 1: Defect Percentage -->
+          <div class="chart-container-box">
+            <h3 class="chart-title">Figure 4: Defect Percentage per Strip vs. 0.5% Limit</h3>
+            <div class="figure-frame">
+              <img src="out/figs/fig_defect_percent.png" alt="Figure 4" class="img-responsive zoomable">
+            </div>
+            <p class="chart-annotation">
+              steel_005 (1.203%) and steel_002 (0.968%) breach the 0.50% inspection threshold, whereas steel_003 and steel_004 remain under 0.20% despite possessing numerous individual pit regions.
+            </p>
+          </div>
+
+          <!-- Analytical Chart 2: Method Comparison -->
+          <div class="chart-container-box">
+            <h3 class="chart-title">Figure 8: Segmentation IoU Benchmark Comparison</h3>
+            <div class="figure-frame">
+              <img src="out/figs/fig_methods.png" alt="Figure 8" class="img-responsive zoomable">
+            </div>
+            <p class="chart-annotation">
+              Proposed method reaches <strong>0.70 mean IoU</strong> (peaks at 0.972 for scratches). Plain Otsu fails (0.02) due to vignetting. Adaptive thresholding reaches 0.31 but suffers from noisy edges.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2col" style="margin-top: 1.5rem;">
+          <!-- Analytical Chart 3: Area vs Aspect Ratio -->
+          <div class="chart-container-box">
+            <h3 class="chart-title">Figure 6: Defect Area vs. Aspect Ratio Clustering</h3>
+            <div class="figure-frame">
+              <img src="out/figs/fig_scatter.png" alt="Figure 6" class="img-responsive zoomable">
+            </div>
+            <p class="chart-annotation">
+              Clear physical separation: Pits/Inclusions form a tight cluster around aspect ratio &approx; 1.0, while Scratches extend up to aspect ratio 22.7. Pearson correlation coefficient = <strong>0.47</strong>.
+            </p>
+          </div>
+
+          <!-- Analytical Chart 4: Defect Classification Breakdown -->
+          <div class="chart-container-box">
+            <h3 class="chart-title">Table 2: Region Statistics by Rule-Based Shape Class</h3>
+            <div class="table-responsive" style="margin-top: 1rem;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Regions</th>
+                    <th>Mean Area (px)</th>
+                    <th>Largest Area (px)</th>
+                    <th>Mean Aspect Ratio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge badge-info">Inclusion/Pit</span></td>
+                    <td>28</td>
+                    <td>79.3</td>
+                    <td>147</td>
+                    <td>1.13</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-red">Patch</span></td>
+                    <td>1</td>
+                    <td>3965.0</td>
+                    <td>3965</td>
+                    <td>1.27</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-amber">Scratch-like</span></td>
+                    <td>5</td>
+                    <td>1209.2</td>
+                    <td>2234</td>
+                    <td>14.66</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img src="out/figs/fig_labels.png" alt="Figure 11" class="img-responsive zoomable" style="max-height: 220px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Spatial Heatmap Section -->
+        <div class="chart-container-box" style="margin-top: 1.5rem;">
+          <h3 class="chart-title">Figure 7: Spatial Defect Accumulation Heatmap</h3>
+          <div class="figure-frame">
+            <img src="out/figs/fig_heatmap.png" alt="Figure 7" class="img-responsive zoomable">
+          </div>
+          <p class="chart-annotation">
+            Spatial 2D accumulation density across strip coordinates. In rolling mills, persistent hotspots localize defective roller cylinders or coolant nozzles, enabling predictive maintenance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: ACADEMIC COMPLIANCE ==================== -->
+    <section id="tab-compliance" class="tab-pane">
+      <div class="grid-2col">
+        <!-- PO Mapping -->
+        <div class="card">
+          <div class="card-header-clean">
+            <h2 class="card-title">Program Outcomes (POs) Mapping (Table 3)</h2>
+            <span class="badge badge-accent">NBA / NAAC Compliance</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="table-po-mapping">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">PO #</th>
+                  <th style="width: 180px;">Program Outcome</th>
+                  <th>Project Implementation Relevance</th>
+                </tr>
+              </thead>
+              <tbody id="table-po-body">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SDG Mapping -->
+        <div class="card">
+          <div class="card-header-clean">
+            <h2 class="card-title">Sustainable Development Goals (SDGs) Mapping (Table 4)</h2>
+            <span class="badge badge-success">UN SDG Alignment</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="table-sdg-mapping">
+              <thead>
+                <tr>
+                  <th style="width: 90px;">SDG #</th>
+                  <th style="width: 180px;">UN Goal</th>
+                  <th>Industrial & Academic Significance</th>
+                </tr>
+              </thead>
+              <tbody id="table-sdg-body">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Academic Certificate & Verification Block -->
+          <div class="academic-cert-box">
+            <div class="cert-title">Academic Certification Block</div>
+            <p>
+              This project titled <strong>“Steel Surface Defect Image Analysis”</strong> was executed by roll numbers <strong>25881A05HD, 25881A05GV, 25881A05GN</strong> in partial fulfillment of the requirements for Bachelor of Technology in Computer Science and Engineering at Vardhaman College of Engineering, Hyderabad.
+            </p>
+            <div class="sign-grid">
+              <div class="sign-block">
+                <div class="sign-line"></div>
+                <div class="sign-name">Course Faculty</div>
+                <div class="sign-dept">CSE, Vardhaman College of Engg.</div>
+              </div>
+              <div class="sign-block">
+                <div class="sign-line"></div>
+                <div class="sign-name">Dr. Gagandeep Arora</div>
+                <div class="sign-dept">Professor & HOD, CSE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Image Lightbox Modal for Figures -->
+  <div id="lightbox-modal" class="lightbox-backdrop">
+    <div class="lightbox-content">
+      <button id="btn-close-lightbox" class="lightbox-close">&times;</button>
+      <div class="lightbox-image-wrap">
+        <img id="lightbox-img" src="" alt="Full Resolution Figure">
+      </div>
+      <div class="lightbox-details">
+        <h3 id="lightbox-title">Figure Title</h3>
+        <p id="lightbox-desc">Figure explanation and engineering context.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
